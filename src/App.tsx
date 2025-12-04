@@ -186,7 +186,7 @@ const App: React.FC = () => {
 
       <footer className="bg-white border-t border-gray-200 mt-12 py-8">
          <div className="max-w-5xl mx-auto px-4 text-center text-gray-500 text-sm">
-            <p className="mb-2">© 2024 Calculadora Rumo ao Milhão. Todos os direitos reservados.</p>
+            <p className="mb-2">© {new Date().getFullYear()} Calculadora Rumo ao Milhão. Todos os direitos reservados.</p>
             <p>Os resultados são simulações e não garantem rentabilidade futura. Investimentos envolvem riscos.</p>
          </div>
       </footer>
