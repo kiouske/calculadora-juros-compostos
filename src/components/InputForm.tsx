@@ -158,7 +158,7 @@ export const InputForm: React.FC<InputFormProps> = ({
         {/* Period */}
         {mode !== CalculationMode.TIME_TO_MILLION && (
           <div>
-            <label className={labelClass}>Período</label>
+            <label className={labelClass}>Tempo</label>
             <div className="flex">
               <div className="relative flex-1 group z-10">
                 <Calendar className={iconClass} />
@@ -177,8 +177,8 @@ export const InputForm: React.FC<InputFormProps> = ({
                   onChange={(e) => onChange('periodType', e.target.value)}
                   className="bg-transparent border-none text-sm font-medium text-gray-600 outline-none cursor-pointer focus:ring-0 w-full text-center appearance-none py-2"
                 >
-                  <option value="years">anos</option>
-                  <option value="months">meses</option>
+                  <option value="years">Anos</option>
+                  <option value="months">Meses</option>
                 </select>
               </div>
             </div>
