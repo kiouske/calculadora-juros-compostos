@@ -25,21 +25,16 @@ export const InputForm: React.FC<InputFormProps> = ({
 
   // Helper to format number as BRL currency string for display
   const formatCurrencyValue = (value: number) => {
-    // Ensure value is treated as a number
-    const num = Number(value);
-    if (isNaN(num)) return '0,00';
-    
-    // Always format with 2 decimal places using PT-BR locale (comma for decimal, dot for thousands)
-    return num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    // Always format with 2 decimal places
+    return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  // Handles currency input changes (ATM style: digits fill from right to left)
+  // Handles currency input changes (e.g. typing 100 becomes 1,00)
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof InputState) => {
-    // Remove all non-digit characters
+    // Get raw digits only
     const rawValue = e.target.value.replace(/\D/g, '');
     
-    // Convert to float (treat as cents)
-    // Example: "1" -> 0.01, "100" -> 1.00, "1000" -> 10.00
+    // Treat as cents (divide by 100)
     const floatValue = rawValue ? parseInt(rawValue, 10) / 100 : 0;
     
     onChange(field, floatValue);
@@ -143,7 +138,7 @@ export const InputForm: React.FC<InputFormProps> = ({
         {/* Period */}
         {mode !== CalculationMode.TIME_TO_MILLION && (
           <div>
-            <label className={labelClass}>Tempo</label>
+            <label className={labelClass}>Período</label>
             <div className="flex">
               <div className="relative flex-1 group z-10">
                 <Calendar className={iconClass} />
@@ -162,8 +157,8 @@ export const InputForm: React.FC<InputFormProps> = ({
                   onChange={(e) => onChange('periodType', e.target.value)}
                   className="bg-transparent border-none text-sm font-medium text-gray-600 outline-none cursor-pointer focus:ring-0 w-full text-center appearance-none py-2"
                 >
-                  <option value="years">Anos</option>
-                  <option value="months">Meses</option>
+                  <option value="years">anos</option>
+                  <option value="months">meses</option>
                 </select>
               </div>
             </div>
