@@ -158,7 +158,7 @@ export const InputForm: React.FC<InputFormProps> = ({
         {/* Period */}
         {mode !== CalculationMode.TIME_TO_MILLION && (
           <div>
-            <label className={labelClass}>Tempo</label>
+            <label className={labelClass}>Período</label>
             <div className="flex">
               <div className="relative flex-1 group z-10">
                 <Calendar className={iconClass} />
@@ -192,13 +192,13 @@ export const InputForm: React.FC<InputFormProps> = ({
             setInterestError(null);
             onClear();
           }}
-          className="text-gray-500 hover:text-gray-800 font-medium px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+          className="bg-[#F4D03F] hover:brightness-95 text-primary-900 px-8 py-3 rounded-lg font-bold shadow-lg shadow-yellow-500/20 transition-all duration-200 transform hover:scale-105"
         >
           Limpar campos
         </button>
         <button
           onClick={onCalculate}
-          className="bg-primary-800 hover:bg-primary-900 text-white px-8 py-3 rounded-lg font-bold shadow-lg shadow-primary-900/20 transform hover:-translate-y-0.5 transition-all duration-200"
+          className="bg-primary-800 hover:bg-primary-900 text-white px-8 py-3 rounded-lg font-bold shadow-lg shadow-primary-900/20 transform hover:scale-105 transition-all duration-200"
         >
           Calcular Agora
         </button>
