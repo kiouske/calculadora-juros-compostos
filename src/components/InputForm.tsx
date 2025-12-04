@@ -1,5 +1,5 @@
-import React from 'react';
-import { Calculator, Calendar, DollarSign, Percent } from 'lucide-react';
+import React, { useState } from 'react';
+import { Calculator, Calendar, DollarSign, Percent, AlertCircle } from 'lucide-react';
 import { CalculationMode, InputState } from '../types';
 
 interface InputFormProps {
@@ -19,6 +19,8 @@ export const InputForm: React.FC<InputFormProps> = ({
   onCalculate,
   onClear
 }) => {
+  const [interestError, setInterestError] = useState<string | null>(null);
+
   const inputClass = "w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-gray-700 font-medium placeholder-gray-400";
   const labelClass = "block text-sm font-medium text-gray-700 mb-1.5";
   const iconClass = "absolute left-3 top-3 h-5 w-5 text-gray-400 pointer-events-none";
@@ -43,6 +45,18 @@ export const InputForm: React.FC<InputFormProps> = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof InputState) => {
     const val = parseFloat(e.target.value);
     onChange(field, isNaN(val) ? '' : val);
+  };
+
+  const handleInterestRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseFloat(e.target.value);
+    
+    if (val < 0) {
+      setInterestError('A taxa de juros não pode ser negativa.');
+      return;
+    }
+    
+    setInterestError(null);
+    onChange('interestRate', isNaN(val) ? '' : val);
   };
 
   return (
@@ -115,14 +129,14 @@ export const InputForm: React.FC<InputFormProps> = ({
               <input
                 type="number"
                 value={values.interestRate}
-                onChange={(e) => handleInputChange(e, 'interestRate')}
-                className={`${inputClass} rounded-r-none border-r-0`}
+                onChange={handleInterestRateChange}
+                className={`${inputClass} rounded-r-none border-r-0 ${interestError ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : ''}`}
                 placeholder="0,00"
                 step="0.1"
                 min="0"
               />
             </div>
-            <div className="bg-gray-50 border border-gray-300 border-l-0 rounded-r-lg px-2 flex items-center justify-center min-w-[80px]">
+            <div className={`bg-gray-50 border border-gray-300 border-l-0 rounded-r-lg px-2 flex items-center justify-center min-w-[80px] ${interestError ? 'border-red-500' : ''}`}>
                <select
                   value={values.rateType}
                   onChange={(e) => onChange('rateType', e.target.value)}
@@ -133,6 +147,12 @@ export const InputForm: React.FC<InputFormProps> = ({
                 </select>
             </div>
           </div>
+          {interestError && (
+            <div className="flex items-center gap-1 mt-1 text-red-500 text-xs">
+              <AlertCircle className="w-3 h-3" />
+              <span>{interestError}</span>
+            </div>
+          )}
         </div>
 
         {/* Period */}
@@ -168,7 +188,10 @@ export const InputForm: React.FC<InputFormProps> = ({
 
       <div className="mt-8 flex items-center justify-between pt-6 border-t border-gray-100">
         <button
-          onClick={onClear}
+          onClick={() => {
+            setInterestError(null);
+            onClear();
+          }}
           className="text-gray-500 hover:text-gray-800 font-medium px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors"
         >
           Limpar campos
