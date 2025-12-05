@@ -37,8 +37,8 @@ export const EvolutionChart: React.FC<ChartProps> = ({ data }) => {
   ];
 
   return (
-    <div className="h-[400px] w-full bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-      <h3 className="text-center text-primary-800 font-bold mb-6">Evolução no Tempo</h3>
+    <div className="h-[400px] w-full bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm transition-colors duration-200">
+      <h3 className="text-center text-primary-800 dark:text-gray-100 font-bold mb-6">Evolução no Tempo</h3>
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={fullData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           <defs>
@@ -47,7 +47,7 @@ export const EvolutionChart: React.FC<ChartProps> = ({ data }) => {
               <stop offset="95%" stopColor="#1f2937" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" className="dark:opacity-30" />
           <XAxis 
             dataKey="name" 
             tick={{ fontSize: 11, fill: '#6b7280' }} 
@@ -106,7 +106,7 @@ export const CompositionChart: React.FC<ChartProps> = ({ data }) => {
   const interestPct = ((data.totalInterest / total) * 100).toFixed(1);
 
   return (
-    <div className="h-[400px] w-full bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col md:flex-row items-center">
+    <div className="h-[400px] w-full bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col md:flex-row items-center transition-colors duration-200">
       <div className="w-full md:w-1/2 h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -129,18 +129,18 @@ export const CompositionChart: React.FC<ChartProps> = ({ data }) => {
       </div>
       
       <div className="w-full md:w-1/2 space-y-4 px-4">
-        <h3 className="text-center md:text-left text-primary-800 font-bold mb-4">Composição Final</h3>
+        <h3 className="text-center md:text-left text-primary-800 dark:text-gray-100 font-bold mb-4">Composição Final</h3>
         
-        <div className="p-4 bg-gray-50 rounded-lg border-l-4 border-gray-500">
-          <p className="text-xs text-gray-500 uppercase font-semibold">Valor Investido</p>
-          <p className="text-xl font-bold text-gray-800">{formatCurrency(data.totalInvested)}</p>
-          <p className="text-xs text-gray-500 mt-1">{investedPct}% do total</p>
+        <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border-l-4 border-gray-500 dark:border-gray-400">
+          <p className="text-xs text-gray-500 dark:text-gray-300 uppercase font-semibold">Valor Investido</p>
+          <p className="text-xl font-bold text-gray-800 dark:text-white">{formatCurrency(data.totalInvested)}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{investedPct}% do total</p>
         </div>
 
-        <div className="p-4 bg-gray-100 rounded-lg border-l-4 border-primary-800">
-          <p className="text-xs text-primary-900 uppercase font-semibold">Total em Juros</p>
-          <p className="text-xl font-bold text-primary-900">{formatCurrency(data.totalInterest)}</p>
-          <p className="text-xs text-primary-700 mt-1">{interestPct}% do total</p>
+        <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg border-l-4 border-primary-800 dark:border-primary-500">
+          <p className="text-xs text-primary-900 dark:text-primary-300 uppercase font-semibold">Total em Juros</p>
+          <p className="text-xl font-bold text-primary-900 dark:text-white">{formatCurrency(data.totalInterest)}</p>
+          <p className="text-xs text-primary-700 dark:text-primary-400 mt-1">{interestPct}% do total</p>
         </div>
       </div>
     </div>

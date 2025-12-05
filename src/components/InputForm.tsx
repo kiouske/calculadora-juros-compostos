@@ -21,12 +21,13 @@ export const InputForm: React.FC<InputFormProps> = ({
 }) => {
   const [interestError, setInterestError] = useState<string | null>(null);
 
-  const inputClass = "w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-gray-700 font-medium placeholder-gray-400";
-  const labelClass = "block text-sm font-medium text-gray-700 mb-1.5";
-  const iconClass = "absolute left-3 top-3 h-5 w-5 text-gray-400 pointer-events-none";
+  const inputClass = "w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-gray-700 dark:text-gray-100 font-medium placeholder-gray-400 dark:placeholder-gray-500";
+  const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5";
+  const iconClass = "absolute left-3 top-3 h-5 w-5 text-gray-400 dark:text-gray-500 pointer-events-none";
 
   // Helper to format number as BRL currency string for display
-  const formatCurrencyValue = (value: number) => {
+  const formatCurrencyValue = (value: number | '') => {
+    if (value === '') return '';
     // Always format with 2 decimal places
     return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
@@ -36,18 +37,32 @@ export const InputForm: React.FC<InputFormProps> = ({
     // Get raw digits only
     const rawValue = e.target.value.replace(/\D/g, '');
     
+    if (rawValue === '') {
+      onChange(field, '');
+      return;
+    }
+
     // Treat as cents (divide by 100)
-    const floatValue = rawValue ? parseInt(rawValue, 10) / 100 : 0;
+    const floatValue = parseInt(rawValue, 10) / 100;
     
     onChange(field, floatValue);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof InputState) => {
+    if (e.target.value === '') {
+      onChange(field, '');
+      return;
+    }
     const val = parseFloat(e.target.value);
     onChange(field, isNaN(val) ? '' : val);
   };
 
   const handleInterestRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setInterestError(null);
+      onChange('interestRate', '');
+      return;
+    }
     const val = parseFloat(e.target.value);
     
     if (val < 0) {
@@ -60,8 +75,8 @@ export const InputForm: React.FC<InputFormProps> = ({
   };
 
   return (
-    <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-100">
-      <h2 className="text-2xl font-bold text-primary-800 mb-6 flex items-center gap-2">
+    <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 transition-colors duration-200">
+      <h2 className="text-2xl font-bold text-primary-800 dark:text-gray-100 mb-6 flex items-center gap-2">
         <Calculator className="w-7 h-7" />
         Simulador Financeiro
       </h2>
@@ -73,14 +88,14 @@ export const InputForm: React.FC<InputFormProps> = ({
           <select
             value={mode}
             onChange={(e) => setMode(e.target.value as CalculationMode)}
-            className="w-full pl-4 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-gray-900 font-semibold appearance-none cursor-pointer hover:bg-gray-100 transition-colors"
+            className="w-full pl-4 pr-10 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-gray-900 dark:text-gray-100 font-semibold appearance-none cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
           >
             <option value={CalculationMode.STANDARD}>Simular Investimento Livre (R$)</option>
             <option value={CalculationMode.TIME_TO_MILLION}>Calcular prazo para atingir R$ 1 Milhão</option>
             <option value={CalculationMode.CONTRIBUTION_TO_MILLION}>Calcular aporte para atingir R$ 1 Milhão</option>
           </select>
           <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
-            <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
           </div>
         </div>
       </div>
@@ -136,11 +151,11 @@ export const InputForm: React.FC<InputFormProps> = ({
                 min="0"
               />
             </div>
-            <div className={`bg-gray-50 border border-gray-300 border-l-0 rounded-r-lg px-2 flex items-center justify-center min-w-[80px] ${interestError ? 'border-red-500' : ''}`}>
+            <div className={`bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 border-l-0 rounded-r-lg px-2 flex items-center justify-center min-w-[80px] ${interestError ? 'border-red-500' : ''}`}>
                <select
                   value={values.rateType}
                   onChange={(e) => onChange('rateType', e.target.value)}
-                  className="bg-transparent border-none text-sm font-medium text-gray-600 outline-none cursor-pointer focus:ring-0 w-full text-center appearance-none py-2"
+                  className="bg-transparent border-none text-sm font-medium text-gray-600 dark:text-gray-300 outline-none cursor-pointer focus:ring-0 w-full text-center appearance-none py-2"
                 >
                   <option value="yearly">anual</option>
                   <option value="monthly">mensal</option>
@@ -171,11 +186,11 @@ export const InputForm: React.FC<InputFormProps> = ({
                   min="1"
                 />
               </div>
-              <div className="bg-gray-50 border border-gray-300 border-l-0 rounded-r-lg px-2 flex items-center justify-center min-w-[80px]">
+              <div className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 border-l-0 rounded-r-lg px-2 flex items-center justify-center min-w-[80px]">
                 <select
                   value={values.periodType}
                   onChange={(e) => onChange('periodType', e.target.value)}
-                  className="bg-transparent border-none text-sm font-medium text-gray-600 outline-none cursor-pointer focus:ring-0 w-full text-center appearance-none py-2"
+                  className="bg-transparent border-none text-sm font-medium text-gray-600 dark:text-gray-300 outline-none cursor-pointer focus:ring-0 w-full text-center appearance-none py-2"
                 >
                   <option value="years">Anos</option>
                   <option value="months">Meses</option>
@@ -186,7 +201,7 @@ export const InputForm: React.FC<InputFormProps> = ({
         )}
       </div>
 
-      <div className="mt-8 flex items-center justify-between pt-6 border-t border-gray-100">
+      <div className="mt-8 flex items-center justify-between pt-6 border-t border-gray-100 dark:border-gray-700">
         <button
           onClick={() => {
             setInterestError(null);
