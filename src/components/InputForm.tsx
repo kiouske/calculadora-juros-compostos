@@ -192,8 +192,8 @@ export const InputForm: React.FC<InputFormProps> = ({
                   onChange={(e) => onChange('periodType', e.target.value)}
                   className="bg-transparent border-none text-sm font-medium text-gray-600 dark:text-gray-300 outline-none cursor-pointer focus:ring-0 w-full text-center appearance-none py-2"
                 >
-                  <option value="years">Anos</option>
-                  <option value="months">Meses</option>
+                  <option value="years">anos</option>
+                  <option value="months">meses</option>
                 </select>
               </div>
             </div>
@@ -213,7 +213,7 @@ export const InputForm: React.FC<InputFormProps> = ({
         </button>
         <button
           onClick={onCalculate}
-          className="bg-primary-800 hover:bg-primary-900 text-white px-8 py-3 rounded-lg font-bold shadow-lg shadow-primary-900/20 transform hover:scale-105 transition-all duration-200"
+          className="bg-primary-800 hover:bg-primary-900 text-white px-8 py-3 rounded-lg font-bold shadow-lg shadow-primary-900/20 transform hover:-translate-y-0.5 transition-all duration-200"
         >
           Calcular Agora
         </button>
