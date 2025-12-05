@@ -65,6 +65,37 @@ const App: React.FC = () => {
   };
 
   const performCalculation = () => {
+    // Validation Logic
+    if (values.interestRate === '') {
+      alert('Por favor, preencha a Taxa de Juros.');
+      return;
+    }
+
+    if (mode === CalculationMode.STANDARD) {
+      if (values.initialValue === '' || values.monthlyValue === '' || values.period === '') {
+        alert('Por favor, preencha todos os campos (Valor Inicial, Mensal e Tempo) para realizar a simulação.');
+        return;
+      }
+    } else if (mode === CalculationMode.TIME_TO_MILLION) {
+      if (values.initialValue === '' || values.monthlyValue === '') {
+        alert('Por favor, preencha o Valor Inicial e o Valor Mensal.');
+        return;
+      }
+      if (Number(values.initialValue) <= 0 && Number(values.monthlyValue) <= 0) {
+         alert('Para calcular o prazo, é necessário informar um Valor Inicial ou um Valor Mensal maior que zero.');
+         return;
+      }
+    } else if (mode === CalculationMode.CONTRIBUTION_TO_MILLION) {
+      if (values.initialValue === '' || values.period === '') {
+        alert('Por favor, preencha o Valor Inicial e o Tempo.');
+        return;
+      }
+      if (Number(values.period) <= 0) {
+        alert('O tempo deve ser maior que zero para calcular o aporte necessário.');
+        return;
+      }
+    }
+
     // Convert inputs to numbers, treating empty strings as 0
     const initialVal = Number(values.initialValue);
     const monthlyVal = Number(values.monthlyValue);
